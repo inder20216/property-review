@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Goa Property Visit Review</title>
+<style>
+  :root{
+    --sand:#FFFFFF;
+    --sand-2:#F6F1FB;
+    --ink:#2B2A2E;
+    --ink-soft:#726C7A;
+    --teal:#8B2FC9;
+    --teal-dark:#6B1F9E;
+    --clay:#F2622E;
+    --line:#E9E1F3;
+    --ok:#2F7D4F;
+    --warn:#B5842D;
+    --bad:#B5432D;
+    --card:#FFFFFF;
+    --grad: linear-gradient(120deg, #7C3AED 0%, #D6409F 52%, #F97316 100%);
+    --radius:10px;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html{scroll-padding-top: env(safe-area-inset-top, 0px);}
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--sand);
+    color:var(--ink);
+    font-family: 'Iowan Old Style','Georgia',serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:28px 18px 60px;}
+  header.top{
+    margin-bottom:22px;
+    padding-top:12px;
+  }
+  header.top::before{
+    content:"";
+    display:block;
+    width:52px;
+    height:4px;
+    border-radius:2px;
+    background:var(--grad);
+    margin-bottom:14px;
+  }
+  .kicker{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12.5px;
+    letter-spacing:.04em;
+    color:var(--teal-dark);
+    margin:0 0 6px;
+  }
+  h1{
+    font-size:26px;
+    line-height:1.2;
+    margin:0 0 4px;
+    font-weight:600;
+  }
+  .sub{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13.5px;
+    color:var(--ink-soft);
+  }
+  .card{
+    position:relative;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-top:none;
+    border-radius:var(--radius);
+    padding:22px 18px 20px;
+    margin-bottom:16px;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;right:0;
+    height:3px;
+    background:var(--grad);
+  }
+  .section-title{
+    font-size:14px;
+    font-weight:700;
+    margin:0 0 14px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    letter-spacing:.02em;
+    background:var(--grad);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .field{margin-bottom:14px;}
+  .field:last-child{margin-bottom:0;}
+  label{
+    display:block;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-bottom:5px;
+  }
+  input[type=text],
+  input[type=number],
+  input[type=date],
+  input[type=tel],
+  input[type=url],
+  textarea,
+  select{
+    width:100%;
+    padding:10px 11px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--sand-2);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:14.5px;
+    color:var(--ink);
+  }
+  input:focus, textarea:focus, select:focus{
+    outline:2px solid var(--teal);
+    outline-offset:1px;
+    background:#fff;
+  }
+  textarea{resize:vertical;min-height:56px;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  @media (max-width:480px){
+    .row3{grid-template-columns:1fr;}
+  }
+
+  /* site-check rows */
+  .check-item{
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:center;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .check-item:last-of-type{border-bottom:none;}
+  .check-label{font-family:'Helvetica Neue',Arial,sans-serif;font-size:14px;}
+  .check-label small{display:block;color:var(--ink-soft);font-size:11.5px;margin-top:2px;}
+  .seg{display:flex;gap:6px;}
+  .seg input{position:absolute;opacity:0;width:0;height:0;}
+  .seg label{
+    margin:0;
+    width:38px;height:34px;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);
+    border-radius:7px;
+    font-size:16px;
+    cursor:pointer;
+    background:var(--sand);
+    color:var(--ink-soft);
+  }
+  .seg input:checked + label{
+    border-color:transparent;
+    color:#fff;
+  }
+  .seg .ok-lbl input:checked + label{background:var(--ok);}
+  .seg .warn-lbl input:checked + label{background:var(--warn);}
+  .seg .bad-lbl input:checked + label{background:var(--bad);}
+
+  /* radio pill groups */
+  .pillgroup{display:flex;flex-wrap:wrap;gap:8px;}
+  .pillgroup input{position:absolute;opacity:0;width:0;height:0;}
+  .pillgroup label{
+    margin:0;
+    padding:8px 14px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13.5px;
+    cursor:pointer;
+    background:var(--sand-2);
+    color:var(--ink);
+  }
+  .pillgroup input:checked + label{
+    background:var(--grad);
+    border-color:transparent;
+    color:#fff;
+  }
+
+  .rating-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+  .rating-row:last-child{margin-bottom:0;}
+  .rating-row label{margin:0;flex:1;}
+  .rating-row input{width:64px;text-align:center;}
+
+  .photo-field{margin-bottom:14px;}
+  .photo-field label{margin-bottom:6px;}
+  .photo-input{
+    display:block;
+    width:100%;
+    padding:10px;
+    border:1px dashed var(--line);
+    border-radius:8px;
+    background:var(--sand-2);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .filename{font-size:12px;color:var(--teal-dark);margin-top:4px;font-family:'Helvetica Neue',Arial,sans-serif;}
+
+  .submit-bar{
+    position:sticky;
+    bottom:0;
+    background:linear-gradient(to top, var(--sand) 60%, transparent);
+    padding:16px 0 4px;
+    margin-top:6px;
+  }
+  button#submitBtn{
+    width:100%;
+    padding:15px;
+    background:var(--grad);
+    background-size:160% 160%;
+    color:#fff;
+    border:none;
+    border-radius:9px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:15.5px;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:0 6px 16px rgba(124,58,237,.25);
+  }
+  button#submitBtn:disabled{background:#D8CFE6;box-shadow:none;}
+  button#submitBtn:active{background-position:80% 50%;}
+
+  .status{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13px;
+    text-align:center;
+    margin-top:10px;
+    min-height:18px;
+  }
+  .status.ok{color:var(--ok);}
+  .status.err{color:var(--bad);}
+
+  .hint{font-family:'Helvetica Neue',Arial,sans-serif;font-size:11.5px;color:var(--ink-soft);margin-top:6px;}
+
+  .success-screen{
+    display:none;
+    text-align:center;
+    padding:60px 20px 40px;
+  }
+  .success-screen.show{display:block;}
+  .success-badge{
+    width:56px;height:56px;
+    margin:0 auto 18px;
+    border-radius:50%;
+    background:var(--grad);
+    color:#fff;
+    font-size:26px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .success-screen h2{
+    font-size:22px;
+    margin:0 0 8px;
+    font-weight:600;
+  }
+  .success-screen p{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:14px;
+    color:var(--ink-soft);
+    margin:0 0 26px;
+  }
+  #restartBtn{
+    padding:14px 26px;
+    background:var(--grad);
+    color:#fff;
+    border:none;
+    border-radius:9px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:0 6px 16px rgba(124,58,237,.25);
+  }
+
+  .success-screen{
+    display:none;
+    text-align:center;
+    padding:60px 20px 40px;
+  }
+  .success-screen.show{display:block;}
+  .success-badge{
+    width:56px;height:56px;
+    margin:0 auto 18px;
+    border-radius:50%;
+    background:var(--grad);
+    color:#fff;
+    font-size:26px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .success-screen h2{
+    font-size:21px;
+    margin:0 0 8px;
+    font-weight:600;
+  }
+  .success-screen p{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    margin:0 0 26px;
+  }
+  #restartBtn{
+    padding:13px 26px;
+    background:var(--grad);
+    color:#fff;
+    border:none;
+    border-radius:9px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:14.5px;
+    font-weight:600;
+    cursor:pointer;
+  }
+
+  .maps-results{
+    position:absolute;
+    left:0;right:0;
+    top:100%;
+    margin-top:4px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    box-shadow:0 8px 22px rgba(60,20,90,.14);
+    z-index:20;
+    overflow:hidden;
+    display:none;
+  }
+  .maps-results.open{display:block;}
+  .maps-result-item{
+    padding:10px 12px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13.5px;
+    color:var(--ink);
+    cursor:pointer;
+    border-bottom:1px solid var(--line);
+  }
+  .maps-result-item:last-child{border-bottom:none;}
+  .maps-result-item:hover, .maps-result-item.active{background:var(--sand-2);}
+  .maps-result-empty{
+    padding:10px 12px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  #useCurrentLocBtn{
+    flex-shrink:0;
+    width:44px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--sand-2);
+    font-size:17px;
+    cursor:pointer;
+  }
+  #useCurrentLocBtn:active{background:var(--line);}
+  #useCurrentLocBtn:disabled{opacity:.5;cursor:default;}
+  .maps-selected-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:6px;
+    padding:5px 10px;
+    border-radius:14px;
+    background:var(--sand-2);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12px;
+    color:var(--teal-dark);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1 id="pageTitle">Property Visit Review</h1>
+  </header>
+
+  <form id="visitForm">
+
+    <div class="card">
+      <p class="section-title">Property</p>
+      <div class="field">
+        <label for="propName">Name / Village</label>
+        <input type="text" id="propName" name="Property Name / Village" required>
+      </div>
+      <div class="field" style="position:relative;">
+        <label for="mapsPin">Location — search like Google Maps</label>
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="mapsPin" placeholder="Start typing a place, village or landmark..." autocomplete="off" style="flex:1;">
+          <button type="button" id="useCurrentLocBtn" title="Use current location">📍</button>
+        </div>
+        <div id="mapsResults" class="maps-results"></div>
+        <p class="hint" id="mapsPreview"></p>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="visitDate">Date</label>
+          <input type="date" id="visitDate" name="Date">
+        </div>
+        <div class="field">
+          <label for="broker">Broker / phone</label>
+          <input type="text" id="broker" name="Broker / Phone">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="section-title">Basics</p>
+      <div class="row2">
+        <div class="field">
+          <label for="plotSize">Plot size (sq m)</label>
+          <input type="number" id="plotSize" name="Plot Size (sqm)" step="any">
+        </div>
+        <div class="field">
+          <label for="askingPrice">Asking price (₹)</label>
+          <input type="number" id="askingPrice" name="Asking Price" step="any">
+        </div>
+      </div>
+      <div class="field">
+        <label for="negPrice">Likely negotiated price (₹)</label>
+        <input type="number" id="negPrice" name="Negotiated Price" step="any">
+      </div>
+      <div class="field">
+        <label for="idea">My idea for it</label>
+        <select id="idea" name="Idea For It">
+          <option value="">Select</option>
+          <option>Villas</option>
+          <option>Own home</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="section-title">First impression</p>
+      <div class="field">
+        <label for="oneSentence">In one sentence</label>
+        <input type="text" id="oneSentence" name="One Sentence Impression">
+      </div>
+      <div class="field">
+        <label for="bestThing">Best thing</label>
+        <input type="text" id="bestThing" name="Best Thing">
+      </div>
+      <div class="field">
+        <label for="biggestConcern">Biggest concern</label>
+        <input type="text" id="biggestConcern" name="Biggest Concern">
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="section-title">Quick site check</p>
+      <div id="checkList"></div>
+      <div class="field" style="margin-top:14px;">
+        <label for="checkIssues">Only note the issues</label>
+        <textarea id="checkIssues" name="Site Check Issues"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="section-title">Ask the broker</p>
+      <div class="field">
+        <label for="surveyNo">Survey / subdivision no.</label>
+        <input type="text" id="surveyNo" name="Survey No">
+      </div>
+      <div class="field">
+        <label for="roadAccess">Legal road access confirmed?</label>
+        <input type="text" id="roadAccess" name="Road Access Confirmed">
+      </div>
+      <div class="field">
+        <label for="titleIssues">Title / ownership issues disclosed?</label>
+        <input type="text" id="titleIssues" name="Title Issues Disclosed">
+      </div>
+      <div class="field">
+        <label for="zoning">Zoning / conversion documents available?</label>
+        <input type="text" id="zoning" name="Zoning Docs Available">
+      </div>
+      <div class="field">
+        <label for="restrict">Anything restricting construction?</label>
+        <input type="text" id="restrict" name="Construction Restrictions">
+      </div>
+      <div class="field">
+        <label for="docsPromised">Documents promised + by when</label>
+        <textarea id="docsPromised" name="Documents Promised"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="section-title">Quick ratings /10</p>
+      <div class="rating-row">
+        <label for="rLocation">Location</label>
+        <input type="number" id="rLocation" name="Rating - Location" min="0" max="10">
+      </div>
+      <div class="rating-row">
+        <label for="rBuild">Plot + build potential</label>
+        <input type="number" id="rBuild" name="Rating - Build Potential" min="0" max="10">
+      </div>
+      <div class="rating-row">
+        <label for="rViews">Views + privacy</label>
+        <input type="number" id="rViews" name="Rating - Views Privacy" min="0" max="10">
+      </div>
+      <div class="rating-row">
+        <label for="rPrice">Price / value</label>
+        <input type="number" id="rPrice" name="Rating - Price Value" min="0" max="10">
+      </div>
+      <div class="rating-row">
+        <label for="rGut">Gut feeling</label>
+        <input type="number" id="rGut" name="Rating - Gut Feeling" min="0" max="10">
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="section-title">My call</p>
+      <div class="field">
+        <label>Deal killer</label>
+        <div class="pillgroup" id="dealKillerGroup"></div>
+      </div>
+      <div class="field">
+        <label for="opportunity">Biggest opportunity</label>
+        <input type="text" id="opportunity" name="Biggest Opportunity">
+      </div>
+      <div class="field">
+        <label for="buyPrice">Would I buy this at ₹__?</label>
+        <input type="number" id="buyPrice" name="Would Buy At Price" step="any">
+      </div>
+      <div class="field">
+        <label>Yes / No / Maybe</label>
+        <div class="pillgroup" id="wouldBuyGroup"></div>
+      </div>
+      <div class="field">
+        <label>Decision</label>
+        <div class="pillgroup" id="decisionGroup"></div>
+      </div>
+      <div class="field">
+        <label for="nextAction">Next action</label>
+        <input type="text" id="nextAction" name="Next Action">
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="section-title">Photos</p>
+      <div class="photo-field">
+        <label for="photoApproach">Approach road</label>
+        <input class="photo-input" type="file" id="photoApproach" accept="image/*" capture="environment">
+        <div class="filename" data-for="photoApproach"></div>
+      </div>
+      <div class="photo-field">
+        <label for="photoEntrance">Entrance / frontage</label>
+        <input class="photo-input" type="file" id="photoEntrance" accept="image/*" capture="environment">
+        <div class="filename" data-for="photoEntrance"></div>
+      </div>
+      <div class="photo-field">
+        <label for="photoCorners">Plot from corners (multiple)</label>
+        <input class="photo-input" type="file" id="photoCorners" accept="image/*" capture="environment" multiple>
+        <div class="filename" data-for="photoCorners"></div>
+      </div>
+      <div class="photo-field">
+        <label for="photoView">View</label>
+        <input class="photo-input" type="file" id="photoView" accept="image/*" capture="environment">
+        <div class="filename" data-for="photoView"></div>
+      </div>
+      <div class="photo-field">
+        <label for="photoProblem">Problem areas (multiple)</label>
+        <input class="photo-input" type="file" id="photoProblem" accept="image/*" capture="environment" multiple>
+        <div class="filename" data-for="photoProblem"></div>
+      </div>
+      <p class="hint">Photos upload with the form and land in the sheet as links.</p>
+    </div>
+
+    <div class="submit-bar">
+      <button type="submit" id="submitBtn">Submit review</button>
+      <p class="status" id="statusMsg"></p>
+    </div>
+  </form>
+
+  <div id="successScreen" class="success-screen">
+    <div class="success-badge">✓</div>
+    <h2>Review submitted</h2>
+    <p>Saved to the tracking sheet with the photos attached.</p>
+    <button type="button" id="restartBtn">Submit another review</button>
+  </div>
+</div>
+
+<script>
+// ---- CONFIGURE THIS: set to your n8n Production webhook URL ----
+const WEBHOOK_URL = "https://inder20216.app.n8n.cloud/webhook/goa-property-review";
+// ------------------------------------------------------------------
+
+const checkItems = [
+  ["Approach", "easy drive, road width, truck access"],
+  ["Plot", "usable shape, frontage, boundaries"],
+  ["Levels", "slope, low areas, drainage / flooding"],
+  ["Feel", "views, trees, privacy, noise"],
+  ["Neighbours", "overlooking, nearby construction"],
+  ["Services", "water, electricity, sewage, internet"],
+  ["Build potential", "room for villas, pool and parking"]
+];
+const checkList = document.getElementById("checkList");
+checkItems.forEach((item, i) => {
+  const name = "check_" + i;
+  const div = document.createElement("div");
+  div.className = "check-item";
+  div.innerHTML = `
+    <div class="check-label">${item[0]}<small>${item[1]}</small></div>
+    <div class="seg">
+      <span class="ok-lbl"><input type="radio" name="${name}" id="${name}_ok" value="OK"><label for="${name}_ok">✅</label></span>
+      <span class="warn-lbl"><input type="radio" name="${name}" id="${name}_warn" value="Watch"><label for="${name}_warn">⚠️</label></span>
+      <span class="bad-lbl"><input type="radio" name="${name}" id="${name}_bad" value="Unknown"><label for="${name}_bad">❓</label></span>
+    </div>`;
+  div.dataset.label = item[0];
+  checkList.appendChild(div);
+});
+
+function buildPillGroup(containerId, name, options){
+  const el = document.getElementById(containerId);
+  options.forEach((opt, i) => {
+    const id = name + "_" + i;
+    const wrap = document.createElement("span");
+    wrap.innerHTML = `<input type="radio" name="${name}" id="${id}" value="${opt}"><label for="${id}">${opt}</label>`;
+    el.appendChild(wrap);
+  });
+}
+buildPillGroup("dealKillerGroup", "dealKiller", ["Deal killer", "None spotted", "Unknown"]);
+buildPillGroup("wouldBuyGroup", "wouldBuy", ["Yes", "No", "Maybe"]);
+buildPillGroup("decisionGroup", "decision", ["Shortlist", "Revisit", "Pass"]);
+
+const mapsPinInput = document.getElementById("mapsPin");
+const mapsResults = document.getElementById("mapsResults");
+const mapsPreview = document.getElementById("mapsPreview");
+
+let selectedPlace = null; // { name, lat, lon, link }
+let searchTimer = null;
+let activeIndex = -1;
+
+function buildMapsLinkFromCoords(lat, lon){
+  return "https://www.google.com/maps?q=" + lat + "," + lon;
+}
+function buildMapsLinkFromText(name){
+  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(name.trim());
+}
+
+function showResults(list){
+  activeIndex = -1;
+  if(!list.length){
+    mapsResults.innerHTML = '<div class="maps-result-empty">No matches — keep typing or try a nearby landmark</div>';
+    mapsResults.classList.add("open");
+    return;
+  }
+  mapsResults.innerHTML = list.map((p, i) =>
+    `<div class="maps-result-item" data-i="${i}">${p.display_name}</div>`
+  ).join("");
+  mapsResults.classList.add("open");
+
+  mapsResults.querySelectorAll(".maps-result-item").forEach(el => {
+    el.addEventListener("click", () => selectPlace(list[parseInt(el.dataset.i, 10)]));
+  });
+}
+
+function selectPlace(p){
+  selectedPlace = {
+    name: p.display_name,
+    lat: p.lat,
+    lon: p.lon,
+    link: buildMapsLinkFromCoords(p.lat, p.lon)
+  };
+  mapsPinInput.value = p.display_name;
+  mapsResults.classList.remove("open");
+  mapsPreview.innerHTML = `<span class="maps-selected-tag">📍 Pinned — <a href="${selectedPlace.link}" target="_blank" rel="noopener" style="color:var(--teal);">view on Google Maps</a></span>`;
+}
+
+mapsPinInput.addEventListener("input", () => {
+  selectedPlace = null;
+  const q = mapsPinInput.value.trim();
+  mapsPreview.textContent = "";
+  clearTimeout(searchTimer);
+  if(q.length < 3){
+    mapsResults.classList.remove("open");
+    return;
+  }
+  searchTimer = setTimeout(async () => {
+    try{
+      const url = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=0&limit=6&countrycodes=in&q=" + encodeURIComponent(q);
+      const res = await fetch(url, { headers: { "Accept": "application/json" } });
+      const data = await res.json();
+      showResults(data || []);
+    }catch(err){
+      mapsResults.innerHTML = '<div class="maps-result-empty">Search unavailable — the typed name will still be saved</div>';
+      mapsResults.classList.add("open");
+    }
+  }, 400);
+});
+
+mapsPinInput.addEventListener("blur", () => {
+  // slight delay so a click on a result registers before the dropdown closes
+  setTimeout(() => mapsResults.classList.remove("open"), 150);
+});
+
+document.addEventListener("click", (e) => {
+  if(!e.target.closest || (!e.target.closest("#mapsPin") && !e.target.closest("#mapsResults"))){
+    mapsResults.classList.remove("open");
+  }
+});
+
+const useCurrentLocBtn = document.getElementById("useCurrentLocBtn");
+useCurrentLocBtn.addEventListener("click", () => {
+  if(!navigator.geolocation){
+    mapsPreview.textContent = "Location isn't available on this device/browser.";
+    return;
+  }
+  useCurrentLocBtn.disabled = true;
+  useCurrentLocBtn.textContent = "⏳";
+  mapsPreview.textContent = "Getting current location...";
+
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+    let name = lat.toFixed(5) + ", " + lon.toFixed(5);
+    try{
+      const url = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lon;
+      const res = await fetch(url, { headers: { "Accept": "application/json" } });
+      const data = await res.json();
+      if(data && data.display_name) name = data.display_name;
+    }catch(err){ /* keep coordinate fallback name */ }
+
+    selectedPlace = { name, lat, lon, link: buildMapsLinkFromCoords(lat, lon) };
+    mapsPinInput.value = name;
+    mapsResults.classList.remove("open");
+    mapsPreview.innerHTML = `<span class="maps-selected-tag">📍 Current location — <a href="${selectedPlace.link}" target="_blank" rel="noopener" style="color:var(--teal);">view on Google Maps</a></span>`;
+    useCurrentLocBtn.disabled = false;
+    useCurrentLocBtn.textContent = "📍";
+  }, (err) => {
+    mapsPreview.textContent = "Couldn't get location — check location permission and try again.";
+    useCurrentLocBtn.disabled = false;
+    useCurrentLocBtn.textContent = "📍";
+  }, { enableHighAccuracy: true, timeout: 10000 });
+});
+
+document.querySelectorAll('.photo-input').forEach(inp => {
+  inp.addEventListener('change', () => {
+    const out = document.querySelector(`.filename[data-for="${inp.id}"]`);
+    if(!inp.files.length){ out.textContent = ""; return; }
+    out.textContent = Array.from(inp.files).map(f => f.name).join(", ");
+  });
+});
+
+const form = document.getElementById("visitForm");
+const submitBtn = document.getElementById("submitBtn");
+const statusMsg = document.getElementById("statusMsg");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if(WEBHOOK_URL.indexOf("PASTE_YOUR") === 0){
+    statusMsg.textContent = "Form isn't connected yet — set WEBHOOK_URL in the code.";
+    statusMsg.className = "status err";
+    return;
+  }
+
+  statusMsg.textContent = "";
+  statusMsg.className = "status";
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
+
+  const fd = new FormData();
+
+  // plain text/number/select fields
+  form.querySelectorAll('input[type=text], input[type=number], input[type=date], input[type=url], textarea, select').forEach(el => {
+    if(el.name) fd.append(el.name, el.value);
+  });
+
+  // location — coordinates if a suggestion was picked; otherwise look it up now
+  const typedLocation = mapsPinInput.value.trim();
+  let finalPlace = selectedPlace;
+
+  if(!finalPlace && typedLocation){
+    try{
+      const url = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=0&limit=1&countrycodes=in&q=" + encodeURIComponent(typedLocation);
+      const res = await fetch(url, { headers: { "Accept": "application/json" } });
+      const data = await res.json();
+      if(data && data[0]){
+        finalPlace = { name: data[0].display_name, lat: data[0].lat, lon: data[0].lon, link: buildMapsLinkFromCoords(data[0].lat, data[0].lon) };
+      }
+    }catch(err){ /* fall through to text-search link below */ }
+  }
+
+  fd.append("Location Name", typedLocation);
+  if(finalPlace){
+    fd.append("Location", finalPlace.link);
+    fd.append("Latitude", finalPlace.lat);
+    fd.append("Longitude", finalPlace.lon);
+  } else {
+    fd.append("Location", typedLocation ? buildMapsLinkFromText(typedLocation) : "");
+    fd.append("Latitude", "");
+    fd.append("Longitude", "");
+  }
+
+  // site check radios
+  checkItems.forEach((item, i) => {
+    const checked = form.querySelector(`input[name="check_${i}"]:checked`);
+    fd.append("Site Check - " + item[0], checked ? checked.value : "");
+  });
+
+  // pill groups
+  ["dealKiller","wouldBuy","decision"].forEach(name => {
+    const checked = form.querySelector(`input[name="${name}"]:checked`);
+    fd.append(name === "dealKiller" ? "Deal Killer" : name === "wouldBuy" ? "Would Buy" : "Decision", checked ? checked.value : "");
+  });
+
+  // photos
+  const photoMap = {
+    photoApproach: "Photo - Approach Road",
+    photoEntrance: "Photo - Entrance Frontage",
+    photoView: "Photo - View"
+  };
+  Object.keys(photoMap).forEach(id => {
+    const inp = document.getElementById(id);
+    if(inp.files[0]) fd.append(photoMap[id], inp.files[0], inp.files[0].name);
+  });
+  Array.from(document.getElementById("photoCorners").files).forEach((f, i) => {
+    fd.append("Photo - Plot Corner " + (i+1), f, f.name);
+  });
+  Array.from(document.getElementById("photoProblem").files).forEach((f, i) => {
+    fd.append("Photo - Problem Area " + (i+1), f, f.name);
+  });
+
+  try{
+    const res = await fetch(WEBHOOK_URL, { method: "POST", body: fd });
+    if(!res.ok) throw new Error("Server responded " + res.status);
+    resetFormFully();
+    document.getElementById("visitForm").style.display = "none";
+    document.getElementById("successScreen").classList.add("show");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }catch(err){
+    statusMsg.textContent = "Couldn't submit — check connection and try again.";
+    statusMsg.className = "status err";
+  }finally{
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit review";
+  }
+});
+
+function resetFormFully(){
+  form.reset();
+  document.querySelectorAll('.filename').forEach(el => el.textContent = "");
+  statusMsg.textContent = "";
+  statusMsg.className = "status";
+
+  // location state — this is what was carrying over between reviews
+  selectedPlace = null;
+  mapsPinInput.value = "";
+  mapsPreview.textContent = "";
+  mapsPreview.innerHTML = "";
+  mapsResults.classList.remove("open");
+  mapsResults.innerHTML = "";
+}
+
+document.getElementById("restartBtn").addEventListener("click", () => {
+  document.getElementById("successScreen").classList.remove("show");
+  document.getElementById("visitForm").style.display = "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+</script>
+</body>
+</html>
